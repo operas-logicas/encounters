@@ -1,7 +1,7 @@
 require('./bootstrap')
 
 import { createApp } from 'vue'
-import Index from './Index.vue'
+import Index from './Index'
 import router from './routes'
 
 const app = createApp(Index)

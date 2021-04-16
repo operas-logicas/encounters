@@ -1,6 +1,6 @@
 <template>
     <header class="modal-card-head">
-        <p class="modal-card-title">Add Sighting</p>
+        <p class="modal-card-title">Register</p>
         <button @click="$emit('closeModal')" class="delete" aria-label="close"></button>
     </header>
     <section class="modal-card-body">

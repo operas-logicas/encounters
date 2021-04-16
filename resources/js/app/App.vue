@@ -25,7 +25,7 @@
                          ]"
                     >
                         <div class="navbar-end">
-                            <router-link :to="{ name: 'home' }" class="navbar-item is-active">
+                            <router-link :to="{ name: 'home' }" class="navbar-item">
                                 Home
                             </router-link>
                             <router-link :to="{ name: 'register' }" class="navbar-item">
@@ -57,49 +57,80 @@
     </section>
 
     <section class="section">
-        <div class="tile is-ancestor">
-            <sighting-list />
+        <div class="columns">
+            <sighting-list @modal="showModal" />
 
             <map-view />
         </div>
-
-        <sighting-form />
     </section>
+
+    <modal @closeModal="closeModal" :show="show" :modal="view" />
 </template>
 
 <script>
-import { ref } from 'vue'
-import SightingForm from './components/SightingForm.vue'
-import SightingList from './components/SightingList.vue'
-import SightingModal from './components/SightingModal.vue'
-import Map from './components/Map.vue'
-import Sighting from "./components/Sighting";
+import { ref, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import Map from './components/Map'
+import Modal from './components/Modal'
+import SightingList from './components/SightingList'
 
 export default {
     components: {
-        Sighting,
-        'sighting-form': SightingForm,
-        'sighting-list': SightingList,
-        'sighting-modal': SightingModal,
-        'map-view': Map
+        'map-view': Map,
+        'modal': Modal,
+        'sighting-list': SightingList
     },
 
     setup() {
+        const router = useRouter()
+        const route = useRoute()
+
         const navbarMenu = ref(false)
+        const show = ref(false)
+        const view = ref('home')
 
         function toggleNavbarMenu() {
             navbarMenu.value = !navbarMenu.value
         }
 
+        function showModal(name) {
+            router.push({ name })
+        }
+
+        function closeModal() {
+            router.push({
+                name: 'home'
+            })
+            show.value = false
+            view.value = ''
+        }
+
+        watch(
+            () => route.name,
+            (name) => {
+                if (name === 'home') return
+                view.value = name
+                show.value = true;
+            }
+        )
+
         return {
             navbarMenu,
-            toggleNavbarMenu
+            show,
+            view,
+            toggleNavbarMenu,
+            showModal,
+            closeModal
         }
     }
 }
 </script>
 
 <style scoped>
+.columns {
+    height: auto;
+}
+
 .hero {
     background-image: url("../../../public/images/ufo-green-hero.jpg");
     background-position: top left;
@@ -108,5 +139,18 @@ export default {
 
 .navbar-burger {
     color: white;
+}
+
+.navbar-item:hover {
+    background-color: hsl(0, 0%, 21%) !important;
+}
+
+.navbar-item.is-active:hover {
+    background-color: black !important;
+}
+
+.show {
+    display: block;
+    z-index: 1000;
 }
 </style>

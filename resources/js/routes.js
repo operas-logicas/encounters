@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import App from './app/App.vue'
-import Login from './auth/Login.vue'
-import Register from './auth/Register.vue'
+import App from './app/App'
+import Login from './app/components/auth/Login'
+import Register from './app/components/auth/Register'
+import SightingDetail from './app/components/Sighting'
+import SightingForm from './app/components/SightingForm'
 
 const routes = [
     {
@@ -15,14 +17,25 @@ const routes = [
         name: 'login'
     },
     {
+        path: '/post',
+        component: SightingForm,
+        name: 'post'
+    },
+    {
         path: '/register',
         component: Register,
         name: 'register'
+    },
+    {
+        path: '/sighting/:id',
+        compoenent: SightingDetail,
+        name: 'sighting'
     }
 ]
 
 const router = createRouter({
     history: createWebHistory(),
+    linkActiveClass: 'is-active',
     routes
 })
 

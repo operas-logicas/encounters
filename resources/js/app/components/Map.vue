@@ -1,7 +1,7 @@
 <template>
-    <div class="tile is-parent">
+    <div class="column is-three-fifths-tablet is-two-thirds-desktop">
+
         <l-map ref="map"
-               class="tile is-child"
                v-if="!loading"
                :zoom="zoom"
                :center="coords"
@@ -31,7 +31,7 @@ export default {
     setup() {
         const state = reactive({
             zoom: 7,
-            coords: [0,0],
+            coords: [0, 0],
             url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
             attribution:
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -64,3 +64,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.column {
+    height: auto;
+}
+</style>
