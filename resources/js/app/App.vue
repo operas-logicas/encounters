@@ -25,13 +25,16 @@
                          ]"
                     >
                         <div class="navbar-end">
-                            <a class="navbar-item">
+                            <router-link :to="{ name: 'home' }" class="navbar-item is-active">
+                                Home
+                            </router-link>
+                            <router-link :to="{ name: 'register' }" class="navbar-item">
                                 Register
-                            </a>
-                            <a class="navbar-item">
+                            </router-link>
+                            <router-link :to="{ name: 'login' }" class="navbar-item">
                                 Login
-                            </a>
-                            <a class="navbar-item">
+                            </router-link>
+                            <a href="#" class="navbar-item">
                                 Logout
                             </a>
                         </div>
@@ -99,7 +102,7 @@ export default {
 <style scoped>
 .hero {
     background-image: url("../../../public/images/ufo-green-hero.jpg");
-    background-position: center;
+    background-position: top left;
     background-size: cover;
 }
 
