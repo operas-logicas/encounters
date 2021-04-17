@@ -28,7 +28,7 @@ const routes = [
     },
     {
         path: '/sighting/:id',
-        compoenent: SightingDetail,
+        component: SightingDetail,
         name: 'sighting'
     }
 ]

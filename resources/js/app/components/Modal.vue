@@ -5,10 +5,10 @@
          ]">
         <div @click="$emit('closeModal')" class="modal-background"></div>
         <div class="modal-card">
-            <login v-if="modal === 'login'" />
-            <register v-else-if="modal === 'register'" />
-            <sighting-form v-else-if="modal === 'post'" />
-            <sighting-detail v-else-if="modal === 'sighting'" />
+            <login @closeModal="$emit('closeModal')" v-if="modal === 'login'" />
+            <register @closeModal="$emit('closeModal')" v-else-if="modal === 'register'" />
+            <sighting-form @closeModal="$emit('closeModal')" v-else-if="modal === 'post'" />
+            <sighting-detail @closeModal="$emit('closeModal')" v-else-if="modal === 'sighting'" />
         </div>
     </div>
 </template>
@@ -28,12 +28,15 @@ export default {
     },
 
     props: {
-        show: String,
+        show: Boolean,
         modal: String
     }
 }
 </script>
 
 <style scoped>
-
+.show {
+    display: block;
+    z-index: 1000;
+}
 </style>

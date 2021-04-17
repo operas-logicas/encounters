@@ -58,9 +58,9 @@
 
     <section class="section">
         <div class="columns">
-            <sighting-list @modal="showModal" />
+            <sighting-list @showModal="showModal" />
 
-            <map-view />
+            <map-view @showModal="showModal" />
         </div>
     </section>
 
@@ -147,10 +147,5 @@ export default {
 
 .navbar-item.is-active:hover {
     background-color: black !important;
-}
-
-.show {
-    display: block;
-    z-index: 1000;
 }
 </style>

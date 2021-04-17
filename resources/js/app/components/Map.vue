@@ -3,8 +3,10 @@
 
         <l-map ref="map"
                v-if="!loading"
+               @click="showForm"
                :zoom="zoom"
                :center="coords"
+               :options="mapOptions"
         >
             <l-tile-layer
                 :url="url"
@@ -18,6 +20,7 @@
 
 <script>
 import { onBeforeMount, reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -29,14 +32,28 @@ export default {
     },
 
     setup() {
+        const router = useRouter()
+
         const state = reactive({
             zoom: 7,
             coords: [0, 0],
             url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
             attribution:
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            mapOptions: {
+                scrollWheelZoom: false
+            },
             loading: false
         })
+
+        function showForm(event) {
+            const { lat, lng } = event.latlng
+            state.coords = [lat, lng]
+
+            // router.push({
+            //     name: 'post'
+            // })
+        }
 
         onBeforeMount(async () => {
             state.loading = true
@@ -59,7 +76,8 @@ export default {
         })
 
         return {
-            ...toRefs(state)
+            ...toRefs(state),
+            showForm
         }
     }
 }
