@@ -8,7 +8,7 @@
             <!-- Content ... -->
         </section>
         <footer class="modal-card-foot">
-            <button class="button is-success">Save changes</button>
+            <button class="button is-success">Register</button>
             <button @click="$emit('closeModal')" class="button">Cancel</button>
         </footer>
     </div>

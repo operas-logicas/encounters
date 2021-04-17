@@ -28,6 +28,9 @@
                             <router-link :to="{ name: 'home' }" class="navbar-item">
                                 Home
                             </router-link>
+                            <router-link :to="{ name: 'post' }" class="navbar-item">
+                                Post
+                            </router-link>
                             <router-link :to="{ name: 'register' }" class="navbar-item">
                                 Register
                             </router-link>
