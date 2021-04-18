@@ -18,16 +18,13 @@ class LikesTableSeeder extends Seeder
     {
         Sighting::all()->each(function (Sighting $sighting) {
             $likes = random_int(0, 15);
-            if ($likes === 0) {
-                return;
-            }
 
             for ($i = 0; $i < $likes; $i++) {
                 $user = User::all()->random();
 
                 $like = Like::make();
-                $like->sighting = $sighting->id;
-                $like->user = $user->id;
+                $like->sighting_id = $sighting->id;
+                $like->user_id = $user->id;
 
                 $like->save();
             }

@@ -9,7 +9,7 @@
         </article>
         <div v-else class="mb-6">
             <router-link :to="{ name: 'sighting', params: { id: '123' } }">
-                <sighting v-for="i in 3" :key="i"  />
+                <sighting v-for="i in 3" :key="i" class="sighting" />
             </router-link>
         </div>
 
@@ -37,3 +37,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.sighting:hover {
+    transform: scale(1.01);
+    box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
+}
+</style>

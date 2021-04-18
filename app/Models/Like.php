@@ -13,11 +13,11 @@ class Like extends Model
 
     public function sighting()
     {
-        $this->belongsTo(Sighting::class);
+        return $this->belongsTo(Sighting::class);
     }
 
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }
