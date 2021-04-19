@@ -8,10 +8,12 @@ use Illuminate\Http\Request;
 
 class SightingController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
         return SightingIndexResource::collection(
-            Sighting::all()
-        )->sortByDesc('likes');
+            $request->state
+                ? Sighting::where('state', $request->state)->get()
+                : Sighting::all()
+        );
     }
 
     public function show($id) {

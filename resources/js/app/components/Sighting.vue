@@ -1,7 +1,7 @@
 <template>
     <article class="content is-small box">
         <div>
-            <p class="subtitle is-flex is-justify-content-space-between mb-0">
+            <p class="subtitle is-flex is-justify-content-space-between">
                 <span class="truncate horiz">{{ sighting.title }}</span>
                 <span @click="">
                     <span v-if="hasLikes" class="is-clickable">💚</span>
@@ -9,13 +9,17 @@
                 </span>
             </p>
         </div>
-        <p><span class="is-size-6 mb-1">👽</span> {{ sighting.user_handle }} &bull; {{ sighting.date }}</p>
+        <p>
+            <span class="is-size-6 mb-1">👽</span>
+            {{ sighting.user_handle }} &bull; {{ niceDate }}
+        </p>
         <p class="truncate">{{ sighting.description }}</p>
     </article>
 </template>
 
 <script>
 import { computed } from 'vue'
+import moment from 'moment'
 
 export default {
     props: {
@@ -23,10 +27,16 @@ export default {
     },
 
     setup(props) {
-        const hasLikes = computed(() => props.sighting.likes > 0)
+        const hasLikes = computed(
+            () => props.sighting.likes > 0
+        )
+        const niceDate = computed(
+            () => moment(props.sighting.date).format('ll')
+        )
 
         return {
-            hasLikes
+            hasLikes,
+            niceDate
         }
     }
 }

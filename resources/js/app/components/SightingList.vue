@@ -10,13 +10,10 @@
         <article v-else-if="none" class="pb-6 box">
             <p>No sightings reported yet...</p>
         </article>
-        <div v-else-if="sightings" class="mb-5">
-            <router-link :to="{ name: 'sighting', params: { id: '123' } }">
-                <sighting v-for="(sighting, i) in sightings"
-                          :key="`sighting-${i}`"
-                          :sighting="sighting"
-                          class="sighting"
-                />
+        <div v-for="(sighting, i) in sightings"
+             :key="`sighting-${i}`" class="mb-5">
+            <router-link :to="{ name: 'sighting', params: { id: sighting.id } }">
+                <sighting :sighting="sighting" class="sighting" />
             </router-link>
         </div>
 
@@ -51,6 +48,7 @@ export default {
             state.loading = false
         }
 
+        // Watch for sightings! Get the top ones.
         watch(
             () => store.state.sightings,
             topSightings

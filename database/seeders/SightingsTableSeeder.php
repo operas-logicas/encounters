@@ -16,7 +16,7 @@ class SightingsTableSeeder extends Seeder
     public function run()
     {
         User::all()->each(function (User $user) {
-            $sighting = Sighting::factory(random_int(0, 3))->make();
+            $sighting = Sighting::factory(random_int(0, 2))->make();
             $user->sightings()->saveMany($sighting);
         });
     }
