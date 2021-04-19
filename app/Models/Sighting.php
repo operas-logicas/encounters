@@ -9,8 +9,6 @@ class Sighting extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'title', 'date', 'description', 'img_path'];
-
     /**
      * Get the value indicating whether the IDs are incrementing.
      *

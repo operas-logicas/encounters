@@ -21,6 +21,7 @@
 <script>
 import { onBeforeMount, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -33,6 +34,7 @@ export default {
 
     setup() {
         const router = useRouter()
+        const store = useStore()
 
         const state = reactive({
             zoom: 7,
@@ -43,6 +45,7 @@ export default {
             mapOptions: {
                 scrollWheelZoom: false
             },
+            sightings: null,
             loading: false
         })
 
@@ -55,6 +58,23 @@ export default {
             // })
         }
 
+        // 'onCreated' get sightings and save to store
+        (async () => {
+            state.loading = true
+
+            try {
+                state.sightings = (await axios.get(`/api/sightings`)).data
+
+                // Save to store
+                store.commit('setSightings', state.sightings)
+
+            } catch (error) {
+                console.log(error)
+            } finally {
+                state.loading = false
+            }
+        })()
+
         onBeforeMount(async () => {
             state.loading = true
 
@@ -64,6 +84,9 @@ export default {
                     position => {
                         const { latitude, longitude } = position.coords
                         state.coords = [latitude, longitude]
+
+                        // Update the store
+                        store.commit('setCurrentPosition', state.coords.join(','))
 
                         state.loading = false
                     },
@@ -85,6 +108,6 @@ export default {
 
 <style scoped>
 .column {
-    height: auto;
+    height: 760px;
 }
 </style>

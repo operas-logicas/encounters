@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { reactive, toRefs, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import Map from './components/Map'
 import Modal from './components/Modal'
@@ -88,12 +88,14 @@ export default {
         const router = useRouter()
         const route = useRoute()
 
-        const navbarMenu = ref(false)
-        const show = ref(false)
-        const view = ref('home')
+        const state = reactive({
+            navbarMenu: false,
+            show: false,
+            view: 'home'
+        })
 
         function toggleNavbarMenu() {
-            navbarMenu.value = !navbarMenu.value
+            state.navbarMenu = !state.navbarMenu
         }
 
         function showModal(name) {
@@ -104,23 +106,21 @@ export default {
             router.push({
                 name: 'home'
             })
-            show.value = false
-            view.value = ''
+            state.show = false
+            state.view = ''
         }
 
         watch(
             () => route.name,
             (name) => {
                 if (name === 'home') return
-                view.value = name
-                show.value = true;
+                state.view = name
+                state.show = true;
             }
         )
 
         return {
-            navbarMenu,
-            show,
-            view,
+            ...toRefs(state),
             toggleNavbarMenu,
             showModal,
             closeModal

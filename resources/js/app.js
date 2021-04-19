@@ -3,9 +3,9 @@ require('./bootstrap')
 import { createApp } from 'vue'
 import Index from './Index'
 import router from './routes'
+import store from './store'
 
-const app = createApp(Index)
-
-app.use(router)
-
-app.mount('#app')
+createApp(Index)
+    .use(store)
+    .use(router)
+    .mount('#app')

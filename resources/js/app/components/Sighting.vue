@@ -2,29 +2,30 @@
     <article class="content is-small box">
         <div>
             <p class="subtitle is-flex is-justify-content-space-between mb-0">
-                <span class="truncate horiz">Lorem ipsum dolor sit amet consectetur adipiscing elit</span>
-                <span @click="likes++">
+                <span class="truncate horiz">{{ sighting.title }}</span>
+                <span @click="">
                     <span v-if="hasLikes" class="is-clickable">💚</span>
-                    <span v-else class="is-clickable">🤍</span> {{ likes }}
+                    <span v-else class="is-clickable">🤍</span> {{ sighting.likes }}
                 </span>
             </p>
         </div>
-        <p><span class="is-size-6 mb-1">👽</span> b788b4 &bull; July 4, 2021</p>
-        <p class="truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Enim ut sem viverra aliquet eget sit. Commodo odio aenean sed adipiscing diam donec adipiscing. Euismod in pellentesque massa placerat. Integer enim neque volutpat ac tincidunt. Ultricies lacus sed turpis tincidunt. Nulla aliquet porttitor lacus luctus accumsan tortor. Bibendum ut tristique et egestas quis ipsum. Tortor at auctor urna nunc id cursus metus aliquam eleifend. Morbi tristique senectus et netus et. Id neque aliquam vestibulum morbi. Arcu cursus euismod quis viverra nibh. Cursus vitae congue mauris rhoncus. Integer quis auctor elit sed vulputate mi. Euismod lacinia at quis risus. Id diam maecenas ultricies mi eget mauris pharetra et ultrices.</p>
+        <p><span class="is-size-6 mb-1">👽</span> {{ sighting.user_handle }} &bull; {{ sighting.date }}</p>
+        <p class="truncate">{{ sighting.description }}</p>
     </article>
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 export default {
-    setup() {
-        const likes = ref(0)
+    props: {
+        sighting: Object
+    },
 
-        const hasLikes = computed(() => likes.value > 0)
+    setup(props) {
+        const hasLikes = computed(() => props.sighting.likes > 0)
 
         return {
-            likes,
             hasLikes
         }
     }

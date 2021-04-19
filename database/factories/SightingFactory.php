@@ -26,15 +26,18 @@ class SightingFactory extends Factory
     {
         $prefix = [
             'Abducted in',
-            'Beamed up in',
-            'Beams of light in',
+            'Beamed up into alien ship in',
+            'Beams of light over',
             'Bizarre dreams while in',
-            'Bright lights in',
+            'Bright lights over',
             'Encounter in',
+            'Flash of light over',
             'Experimented on in',
             'Probed in',
             'Sighting in'
         ];
+
+        $state = $this->faker->state;
 
         $date = Carbon::instance(
             $this->faker->dateTimeBetween(
@@ -44,10 +47,11 @@ class SightingFactory extends Factory
 
         return [
             'id' => Str::uuid(),
-            'title' => Arr::random($prefix) . ' ' . $this->faker->city . ', ' . $this->faker->state,
+            'title' => Arr::random($prefix) . ' ' . $this->faker->city . ', ' . $state,
             'date' => $date,
             'description' => $this->faker->text(),
-            'location' => $this->faker->latitude . ', ' . $this->faker->longitude,
+            'location' => $this->faker->latitude . ',' . $this->faker->longitude,
+            'state' => $state,
             'img_path' => random_int(0, 1) ? './images/user/640x480.png' : null,
         ];
     }

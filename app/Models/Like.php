@@ -9,8 +9,6 @@ class Like extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'sighting_id', 'user_id' ];
-
     public function sighting()
     {
         return $this->belongsTo(Sighting::class);
