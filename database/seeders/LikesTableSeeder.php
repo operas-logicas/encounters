@@ -17,7 +17,13 @@ class LikesTableSeeder extends Seeder
     public function run()
     {
         Sighting::all()->each(function (Sighting $sighting) {
-            $likes = random_int(0, 15);
+            $likes = random_int(0, 1)
+                ? (
+                    random_int(0, 1)
+                        ? random_int(12, 27)
+                        : random_int(4, 11)
+                )
+                : random_int(0, 3);
 
             for ($i = 0; $i < $likes; $i++) {
                 $user = User::all()->random();

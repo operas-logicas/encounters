@@ -1,5 +1,5 @@
 <template>
-    <div class="column is-three-fifths-tablet is-two-thirds-desktop">
+    <div class="sighting-map column is-three-fifths-tablet is-two-thirds-desktop">
         <div v-if="loading">Loading...</div>
         <l-map v-else ref="map"
                @click="updateLocation"
@@ -12,7 +12,6 @@
                 :attribution="attribution"
             />
 
-            <l-marker :lat-lng="coords" />
             <l-marker v-for="(sighting, i) in sightings"
                       :key="`marker-${i}`"
                       :lat-lng="sighting.location.split(',')"
@@ -36,7 +35,7 @@ import 'leaflet/dist/leaflet.css'
 
 export default {
     components: {
-        Sighting,
+        'sighting': Sighting,
         LMap,
         LTileLayer,
         LMarker,
@@ -54,13 +53,6 @@ export default {
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             mapOptions: {
                 scrollWheelZoom: false
-            },
-            popupOptions: {
-                maxWidth: 250,
-                minWidth: 100,
-                autoClose: false,
-                closeOnClick: false,
-                className: '',
             },
 
             sightings: null,
@@ -145,8 +137,12 @@ export default {
 }
 </script>
 
-<style scoped>
-.column {
+<style>
+.sighting-map {
     height: 760px;
+}
+
+.leaflet-popup-content {
+    margin: 0 !important;
 }
 </style>
