@@ -156,9 +156,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       loading: true
     });
 
-    function updateLocation() {//...
-    }
-
     function getCurrentState() {
       return _getCurrentState.apply(this, arguments);
     }
@@ -186,7 +183,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 9:
                 _context2.prev = 9;
                 _context2.t0 = _context2["catch"](1);
-                alert('Could not get your state');
+                alert("Could not determine what state you're in.");
 
               case 12:
               case "end":
@@ -198,33 +195,58 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return _getCurrentState.apply(this, arguments);
     }
 
-    function loadMap(_x) {
-      return _loadMap.apply(this, arguments);
+    function renderMap(_x) {
+      return _renderMap.apply(this, arguments);
     }
 
-    function _loadMap() {
-      _loadMap = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(position) {
-        var _position$coords, latitude, longitude;
+    function _renderMap() {
+      _renderMap = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(position) {
+        var _position$coords, latitude, longitude, _position$latlng, lat, lng;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _position$coords = position.coords, latitude = _position$coords.latitude, longitude = _position$coords.longitude;
-                state.coords = [latitude, longitude]; // Update the store
+                if (!position.coords) {
+                  _context3.next = 5;
+                  break;
+                }
 
-                store.commit('setCurrentPosition', state.coords);
-                _context3.next = 5;
-                return getCurrentState();
+                // Geolocation position
+                _position$coords = position.coords, latitude = _position$coords.latitude, longitude = _position$coords.longitude;
+                state.coords = [latitude, longitude];
+                _context3.next = 11;
+                break;
 
               case 5:
+                if (!(position.latlng && position.latlng !== state.coords)) {
+                  _context3.next = 10;
+                  break;
+                }
+
+                // Map click event
+                _position$latlng = position.latlng, lat = _position$latlng.lat, lng = _position$latlng.lng;
+                state.coords = [lat, lng];
+                _context3.next = 11;
+                break;
+
+              case 10:
+                return _context3.abrupt("return");
+
+              case 11:
+                // Update the store
+                store.commit('setCurrentPosition', state.coords);
+                _context3.next = 14;
+                return getCurrentState();
+
+              case 14:
               case "end":
                 return _context3.stop();
             }
           }
         }, _callee3);
       }));
-      return _loadMap.apply(this, arguments);
+      return _renderMap.apply(this, arguments);
     }
 
     function getSightings() {
@@ -281,9 +303,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               _context.next = 3;
               return navigator.geolocation.getCurrentPosition( // Success
-              loadMap, // Error
+              renderMap, // Error
               function () {
-                alert('Could not get your position');
+                alert('Could not get your position.');
               });
 
             case 3:
@@ -299,7 +321,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return state.currentState;
     }, getSightings);
     return _objectSpread(_objectSpread({}, (0,vue__WEBPACK_IMPORTED_MODULE_1__.toRefs)(state)), {}, {
-      updateLocation: updateLocation
+      renderMap: renderMap
     });
   }
 });
@@ -683,7 +705,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [_ctx.loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_2, "Loading...")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_l_map, {
     key: 1,
     ref: "map",
-    onClick: $setup.updateLocation,
+    onClick: $setup.renderMap,
     zoom: _ctx.zoom,
     center: _ctx.coords,
     options: _ctx.mapOptions
@@ -842,7 +864,7 @@ var _hoisted_1 = {
   "class": "content is-small box"
 };
 var _hoisted_2 = {
-  "class": "subtitle is-flex is-justify-content-space-between"
+  "class": "is-size-6 is-flex is-justify-content-space-between"
 };
 var _hoisted_3 = {
   "class": "truncate horiz"
@@ -1014,8 +1036,10 @@ var _hoisted_1 = {
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("article", {
   "class": "notification is-black"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
-  "class": "title"
-}, "Top Sightings In Your State")], -1
+  "class": "title mb-2"
+}, "Top Sightings In Your State"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+  "class": "is-size-7"
+}, "(Click on the map to show sightings in another state)")], -1
 /* HOISTED */
 );
 
@@ -1394,7 +1418,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.sighting-map {\n    height: 760px;\n}\n.leaflet-popup-content {\n    margin: 0 !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.sighting-map {\n    height: 800px;\n}\n.leaflet-popup-content {\n    margin: 0 !important;\n    width: 320px !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

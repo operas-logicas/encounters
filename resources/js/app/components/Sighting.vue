@@ -1,7 +1,7 @@
 <template>
     <article class="content is-small box">
         <div>
-            <p class="subtitle is-flex is-justify-content-space-between">
+            <p class="is-size-6 is-flex is-justify-content-space-between">
                 <span class="truncate horiz">{{ sighting.title }}</span>
                 <span @click="">
                     <span v-if="hasLikes" class="is-clickable">💚</span>

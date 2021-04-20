@@ -2,7 +2,7 @@
     <div class="sighting-map column is-three-fifths-tablet is-two-thirds-desktop">
         <div v-if="loading">Loading...</div>
         <l-map v-else ref="map"
-               @click="updateLocation"
+               @click="renderMap"
                :zoom="zoom"
                :center="coords"
                :options="mapOptions"
@@ -60,10 +60,6 @@ export default {
             loading: true
         })
 
-        function updateLocation() {
-            //...
-        }
-
         async function getCurrentState() {
             const apiKey = 'de7fdcfba2734932be8d31c84963114a'
 
@@ -80,13 +76,20 @@ export default {
                     )).data.results[0].components.state
 
             } catch (error) {
-                alert('Could not get your state')
+                alert(`Could not determine what state you're in.`)
             }
         }
 
-        async function loadMap(position) {
-            const { latitude, longitude } = position.coords
-            state.coords = [latitude, longitude]
+        async function renderMap(position) {
+            if (position.coords) {
+                // Geolocation position
+                const { latitude, longitude } = position.coords
+                state.coords = [latitude, longitude]
+            } else if (position.latlng && position.latlng !== state.coords) {
+                // Map click event
+                const { lat, lng } = position.latlng
+                state.coords = [lat, lng]
+            } else return
 
             // Update the store
             store.commit('setCurrentPosition', state.coords)
@@ -114,11 +117,11 @@ export default {
             if (navigator.geolocation)
                 await navigator.geolocation.getCurrentPosition(
                     // Success
-                    loadMap,
+                    renderMap,
 
                     // Error
                     () => {
-                        alert('Could not get your position')
+                        alert('Could not get your position.')
                     }
                 )
         })()
@@ -131,7 +134,7 @@ export default {
 
         return {
             ...toRefs(state),
-            updateLocation
+            renderMap
         }
     }
 }
@@ -139,10 +142,11 @@ export default {
 
 <style>
 .sighting-map {
-    height: 760px;
+    height: 800px;
 }
 
 .leaflet-popup-content {
     margin: 0 !important;
+    width: 320px !important;
 }
 </style>

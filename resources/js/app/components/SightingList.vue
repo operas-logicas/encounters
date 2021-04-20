@@ -1,7 +1,8 @@
 <template>
     <div class="column is-two-fifths-tablet is-one-third-desktop mb-6 is-black">
         <article class="notification is-black">
-            <p class="title">Top Sightings In Your State</p>
+            <p class="title mb-2">Top Sightings In Your State</p>
+            <p class="is-size-7">(Click on the map to show sightings in another state)</p>
         </article>
 
         <article v-if="loading" class="pb-6 box">
