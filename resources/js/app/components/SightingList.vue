@@ -13,7 +13,7 @@
         </article>
         <div v-for="(sighting, i) in sightings"
              :key="`sighting-${i}`" class="mb-5">
-            <router-link :to="{ name: 'sighting', params: { id: sighting.id } }">
+            <router-link :to="{ name: 'sighting', params: { id: String(sighting.id) } }">
                 <sighting :sighting="sighting" class="sighting" />
             </router-link>
         </div>
@@ -44,8 +44,11 @@ export default {
         })
 
         function topSightings() {
+            state.none = false
+
             state.sightings = store.getters['topSightings']
-            if (!state.sightings) state.none = true
+            if (_.size(state.sightings) === 0) state.none = true
+
             state.loading = false
         }
 

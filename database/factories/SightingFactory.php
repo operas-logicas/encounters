@@ -26,16 +26,16 @@ class SightingFactory extends Factory
     {
         // Title prefix
         $prefix = [
-            'Abducted in',
+            'Abducted by aliens in',
             'Beamed up into alien ship in',
             'Beams of light over',
-            'Bizarre dreams while in',
-            'Bright lights over',
-            'Encounter in',
-            'Flash of light over',
-            'Experimented on in',
-            'Probed in',
-            'Sighting in'
+            'Bizarre dreams while staying in',
+            'Flash of light in the sky over',
+            'Hovering over house in',
+            'Landed in backyard in',
+            'UFO sighting in',
+            'Unidentified life form spotted in',
+            'Weird encounter in'
         ];
 
         // Date

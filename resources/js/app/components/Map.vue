@@ -35,7 +35,7 @@ import 'leaflet/dist/leaflet.css'
 
 export default {
     components: {
-        'sighting': Sighting,
+        Sighting,
         LMap,
         LTileLayer,
         LMarker,
@@ -100,7 +100,9 @@ export default {
         async function getSightings() {
             try {
                 state.sightings =
-                    (await axios.get(`/api/sightings?state=${state.currentState}`)).data.data
+                    (await axios.get(
+                        `/api/sightings?state=${state.currentState}`)
+                    ).data.data
 
                 // Save to store
                 store.commit('setSightings', state.sightings)

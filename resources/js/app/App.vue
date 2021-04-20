@@ -112,7 +112,7 @@ export default {
 
         watch(
             () => route.name,
-            (name) => {
+            name => {
                 if (name === 'home') return
                 state.view = name
                 state.show = true;

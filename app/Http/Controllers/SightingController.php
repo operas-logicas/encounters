@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\SightingIndexResource;
+use App\Http\Resources\SightingShowResource;
 use App\Models\Sighting;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class SightingController extends Controller
     }
 
     public function show($id) {
-        return Sighting::findOrFail($id)->likes();
+        return new SightingShowResource(Sighting::findOrFail($id));
     }
 
     public function store(Request $request) {
