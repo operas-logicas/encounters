@@ -30,12 +30,12 @@ class SightingFactory extends Factory
             'Beamed up into alien ship in',
             'Beams of light over',
             'Bizarre dreams while staying in',
+            'Close encounter in',
             'Flash of light in the sky over',
             'Hovering over house in',
             'Landed in backyard in',
             'UFO sighting in',
-            'Unidentified life form spotted in',
-            'Weird encounter in'
+            'Unidentified life form spotted in'
         ];
 
         // Date

@@ -103,11 +103,11 @@ export default {
         }
 
         function closeModal() {
+            state.show = false
+            state.view = 'home'
             router.push({
                 name: 'home'
             })
-            state.show = false
-            state.view = ''
         }
 
         watch(
@@ -115,7 +115,7 @@ export default {
             name => {
                 if (name === 'home') return
                 state.view = name
-                state.show = true;
+                state.show = true
             }
         )
 

@@ -1,8 +1,5 @@
 <template>
-    <div v-if="loading">
-        Loading...
-    </div>
-    <div v-else-if="sighting">
+    <div v-if="sighting" class="modal-card">
         <header class="modal-card-head pb-2">
             <p class="modal-card-title is-flex-shrink-1">
                 {{ sighting.title }}
@@ -15,19 +12,21 @@
             <button @click="$emit('closeModal')" class="delete" aria-label="close"></button>
         </header>
 
-        <section class="modal-card-body">
-            <p v-if="sighting.img_path" class="image is-4by3 mb-3">
-                <img :src="`../${sighting.img_path}`">
-            </p>
-            <p class="mb-3">
-                {{ sighting.description }}
-            </p>
-            <p>
-                <span @click="sighting.likes++">
-                    <span v-if="hasLikes" class="is-clickable">💚</span>
-                    <span v-else class="is-clickable">🤍</span> {{ sighting.likes }}
-                </span>
-            </p>
+        <section class="modal-card-body pb-3">
+            <div class="content">
+                <p v-if="sighting.img_path" class="image is-4by3 mb-3">
+                    <img :src="`../${sighting.img_path}`">
+                </p>
+                <p class="mb-3">
+                    {{ sighting.description }}
+                </p>
+                <p class="mb-3">
+                    <span @click.once="sighting.likes++">
+                        <span v-if="hasLikes" class="is-clickable">💚</span>
+                        <span v-else class="is-clickable">🤍</span> {{ sighting.likes }}
+                    </span>
+                </p>
+            </div>
         </section>
 
         <footer class="modal-card-foot">

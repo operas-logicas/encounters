@@ -1,15 +1,13 @@
 <template>
     <div class="modal"
          :class="[
-            { 'show': show }
+            { 'is-active': show }
          ]">
         <div @click="$emit('closeModal')" class="modal-background"></div>
-        <div class="modal-card">
-            <login @closeModal="$emit('closeModal')" v-if="modal === 'login'" />
-            <register @closeModal="$emit('closeModal')" v-else-if="modal === 'register'" />
-            <sighting-form @closeModal="$emit('closeModal')" v-else-if="modal === 'post'" />
-            <sighting-detail @closeModal="$emit('closeModal')" v-else-if="modal === 'sighting'" />
-        </div>
+        <login @closeModal="$emit('closeModal')" v-if="modal === 'login'" />
+        <register @closeModal="$emit('closeModal')" v-else-if="modal === 'register'" />
+        <sighting-form @closeModal="$emit('closeModal')" v-else-if="modal === 'post'" />
+        <sighting-detail @closeModal="$emit('closeModal')" v-else-if="modal === 'sighting'" />
     </div>
 </template>
 
@@ -35,8 +33,8 @@ export default {
 </script>
 
 <style scoped>
-.show {
-    display: block;
+.is-active {
+    display: flex;
     z-index: 1000;
 }
 </style>
