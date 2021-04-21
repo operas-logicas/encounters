@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class CreateSightingsTable extends Migration
 {
@@ -14,7 +15,7 @@ class CreateSightingsTable extends Migration
     public function up()
     {
         Schema::create('sightings', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('id')->default(Str::uuid())->primary();
             $table->string('title');
             $table->date('date');
             $table->text('description');

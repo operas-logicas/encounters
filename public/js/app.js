@@ -112,10 +112,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var _Sighting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Sighting */ "./resources/js/app/components/Sighting.vue");
-/* harmony import */ var _vue_leaflet_vue_leaflet__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @vue-leaflet/vue-leaflet */ "./node_modules/@vue-leaflet/vue-leaflet/dist/vue-leaflet.esm.js");
+/* harmony import */ var _vue_leaflet_vue_leaflet__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @vue-leaflet/vue-leaflet */ "./node_modules/@vue-leaflet/vue-leaflet/dist/vue-leaflet.esm.js");
 /* harmony import */ var leaflet_dist_leaflet_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! leaflet/dist/leaflet.css */ "./node_modules/leaflet/dist/leaflet.css");
+/* harmony import */ var _shared_formatCoords__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../shared/formatCoords */ "./resources/js/app/shared/formatCoords.js");
+/* harmony import */ var _shared_getCurrentState__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shared/getCurrentState */ "./resources/js/app/shared/getCurrentState.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -133,16 +135,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     Sighting: _Sighting__WEBPACK_IMPORTED_MODULE_2__.default,
-    LMap: _vue_leaflet_vue_leaflet__WEBPACK_IMPORTED_MODULE_4__.LMap,
-    LTileLayer: _vue_leaflet_vue_leaflet__WEBPACK_IMPORTED_MODULE_4__.LTileLayer,
-    LMarker: _vue_leaflet_vue_leaflet__WEBPACK_IMPORTED_MODULE_4__.LMarker,
-    LPopup: _vue_leaflet_vue_leaflet__WEBPACK_IMPORTED_MODULE_4__.LPopup
+    LMap: _vue_leaflet_vue_leaflet__WEBPACK_IMPORTED_MODULE_6__.LMap,
+    LTileLayer: _vue_leaflet_vue_leaflet__WEBPACK_IMPORTED_MODULE_6__.LTileLayer,
+    LMarker: _vue_leaflet_vue_leaflet__WEBPACK_IMPORTED_MODULE_6__.LMarker,
+    LPopup: _vue_leaflet_vue_leaflet__WEBPACK_IMPORTED_MODULE_6__.LPopup
   },
   setup: function setup() {
-    var store = (0,vuex__WEBPACK_IMPORTED_MODULE_5__.useStore)();
+    var store = (0,vuex__WEBPACK_IMPORTED_MODULE_7__.useStore)();
     var state = (0,vue__WEBPACK_IMPORTED_MODULE_1__.reactive)({
       zoom: 7,
       coords: [0, 0],
@@ -152,99 +156,63 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         scrollWheelZoom: false
       },
       sightings: null,
-      currentState: '',
+      currentState: null,
       loading: true
     });
-
-    function getCurrentState() {
-      return _getCurrentState.apply(this, arguments);
-    }
-
-    function _getCurrentState() {
-      _getCurrentState = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var apiKey, axiosService;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                apiKey = 'de7fdcfba2734932be8d31c84963114a';
-                _context2.prev = 1;
-                // Need a single axios instance w/o X-Requested-With
-                axiosService = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-                delete axiosService.defaults.headers.common['X-Requested-With'];
-                _context2.next = 6;
-                return axiosService.get("https://api.opencagedata.com/geocode/v1/json?q=".concat(state.coords.join('+'), "&key=").concat(apiKey));
-
-              case 6:
-                state.currentState = _context2.sent.data.results[0].components.state;
-                _context2.next = 12;
-                break;
-
-              case 9:
-                _context2.prev = 9;
-                _context2.t0 = _context2["catch"](1);
-                alert("Could not determine what state you're in.");
-
-              case 12:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, null, [[1, 9]]);
-      }));
-      return _getCurrentState.apply(this, arguments);
-    }
 
     function renderMap(_x) {
       return _renderMap.apply(this, arguments);
     }
 
     function _renderMap() {
-      _renderMap = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(position) {
+      _renderMap = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(position) {
         var _position$coords, latitude, longitude, _position$latlng, lat, lng;
 
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 if (!position.coords) {
-                  _context3.next = 5;
+                  _context2.next = 5;
                   break;
                 }
 
                 // Geolocation position
                 _position$coords = position.coords, latitude = _position$coords.latitude, longitude = _position$coords.longitude;
-                state.coords = [latitude, longitude];
-                _context3.next = 11;
+                state.coords = (0,_shared_formatCoords__WEBPACK_IMPORTED_MODULE_4__.default)(latitude, longitude);
+                _context2.next = 11;
                 break;
 
               case 5:
                 if (!(position.latlng && position.latlng !== state.coords)) {
-                  _context3.next = 10;
+                  _context2.next = 10;
                   break;
                 }
 
                 // Map click event
                 _position$latlng = position.latlng, lat = _position$latlng.lat, lng = _position$latlng.lng;
-                state.coords = [lat, lng];
-                _context3.next = 11;
+                state.coords = (0,_shared_formatCoords__WEBPACK_IMPORTED_MODULE_4__.default)(lat, lng);
+                _context2.next = 11;
                 break;
 
               case 10:
-                return _context3.abrupt("return");
+                return _context2.abrupt("return");
 
               case 11:
                 // Update the store
                 store.commit('setCurrentPosition', state.coords);
-                _context3.next = 14;
-                return getCurrentState();
+                _context2.next = 14;
+                return (0,_shared_getCurrentState__WEBPACK_IMPORTED_MODULE_5__.default)(state.coords);
 
               case 14:
+                state.currentState = _context2.sent;
+
+              case 15:
               case "end":
-                return _context3.stop();
+                return _context2.stop();
             }
           }
-        }, _callee3);
+        }, _callee2);
       }));
       return _renderMap.apply(this, arguments);
     }
@@ -255,38 +223,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
     function _getSightings() {
-      _getSightings = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+      _getSightings = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
-                _context4.prev = 0;
-                _context4.next = 3;
+                _context3.prev = 0;
+                _context3.next = 3;
                 return axios.get("/api/sightings?state=".concat(state.currentState));
 
               case 3:
-                state.sightings = _context4.sent.data.data;
+                state.sightings = _context3.sent.data.data;
                 // Save to store
                 store.commit('setSightings', state.sightings);
-                _context4.next = 10;
+                _context3.next = 10;
                 break;
 
               case 7:
-                _context4.prev = 7;
-                _context4.t0 = _context4["catch"](0);
-                console.log(_context4.t0);
+                _context3.prev = 7;
+                _context3.t0 = _context3["catch"](0);
+                console.log(_context3.t0);
 
               case 10:
-                _context4.prev = 10;
+                _context3.prev = 10;
                 state.loading = false;
-                return _context4.finish(10);
+                return _context3.finish(10);
 
               case 13:
               case "end":
-                return _context4.stop();
+                return _context3.stop();
             }
           }
-        }, _callee4, null, [[0, 7, 10, 13]]);
+        }, _callee3, null, [[0, 7, 10, 13]]);
       }));
       return _getSightings.apply(this, arguments);
     }
@@ -314,7 +282,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }
       }, _callee);
-    }))(); // When we get current state, get sightings
+    }))(); // When we get the current state from position,
+    // or a new sighting is pushed to the global store,
+    // refresh sightings from server
 
 
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.watch)(function () {
@@ -486,6 +456,155 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/app/components/SightingForm.vue?vue&type=script&lang=js":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/app/components/SightingForm.vue?vue&type=script&lang=js ***!
+  \**********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var _shared_getCurrentState__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/getCurrentState */ "./resources/js/app/shared/getCurrentState.js");
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  setup: function setup(props, _ref) {
+    var emit = _ref.emit;
+    var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_3__.useRouter)();
+    var store = (0,vuex__WEBPACK_IMPORTED_MODULE_4__.useStore)();
+    var state = (0,vue__WEBPACK_IMPORTED_MODULE_1__.reactive)({
+      title: null,
+      date: null,
+      description: null,
+      file: null,
+      coords: [store.state.currentPosition[0], store.state.currentPosition[1]],
+      currentState: null,
+      errors: null,
+      sending: false,
+      error: false
+    });
+
+    function validateErrors(field) {
+      return state.errors && state.errors[field] ? state.errors[field] : null;
+    }
+
+    function submit() {
+      return _submit.apply(this, arguments);
+    }
+
+    function _submit() {
+      _submit = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var formData, response, sighting;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                state.sending = true;
+                state.errors = null;
+                _context.next = 4;
+                return (0,_shared_getCurrentState__WEBPACK_IMPORTED_MODULE_2__.default)(state.coords);
+
+              case 4:
+                state.currentState = _context.sent;
+                formData = new FormData();
+                formData.append('title', state.title);
+                formData.append('date', state.date);
+                formData.append('description', state.description);
+                formData.append('location', state.coords.join(','));
+                formData.append('state', state.currentState);
+                if (state.file) formData.append('file', state.file.files[0]);
+                _context.prev = 12;
+                _context.next = 15;
+                return axios.post("/api/sightings", formData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+                });
+
+              case 15:
+                response = _context.sent;
+
+                if (!(response.status === 201)) {
+                  _context.next = 23;
+                  break;
+                }
+
+                state.sending = false; // Push new sighting to global store
+                // (will trigger refresh from server)
+
+                sighting = response.data.data;
+                store.commit('setSighting', sighting); // Close modal
+
+                emit('closeModal'); // Redirect to new sighting
+
+                _context.next = 23;
+                return router.push({
+                  name: 'sighting',
+                  params: {
+                    id: sighting.id
+                  }
+                });
+
+              case 23:
+                _context.next = 28;
+                break;
+
+              case 25:
+                _context.prev = 25;
+                _context.t0 = _context["catch"](12);
+                if (_context.t0.response && _context.t0.response.status && _context.t0.response.status === 422) state.errors = _context.t0.response.data.errors;else state.error = true;
+
+              case 28:
+                _context.prev = 28;
+                state.sending = false;
+                return _context.finish(28);
+
+              case 31:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[12, 25, 28, 31]]);
+      }));
+      return _submit.apply(this, arguments);
+    }
+
+    (0,vue__WEBPACK_IMPORTED_MODULE_1__.watch)(function () {
+      return store.state.currentPosition;
+    }, function () {
+      state.coords = [store.state.currentPosition[0], store.state.currentPosition[1]];
+    });
+    return _objectSpread(_objectSpread({}, (0,vue__WEBPACK_IMPORTED_MODULE_1__.toRefs)(state)), {}, {
+      validateErrors: validateErrors,
+      submit: submit
+    });
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/app/components/SightingList.vue?vue&type=script&lang=js":
 /*!**********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/app/components/SightingList.vue?vue&type=script&lang=js ***!
@@ -533,6 +652,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return store.state.sightings;
     }, topSightings);
     return _objectSpread({}, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toRefs)(state));
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/app/shared/components/ValidationErrors.vue?vue&type=script&lang=js":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/app/shared/components/ValidationErrors.vue?vue&type=script&lang=js ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['errors'],
+  setup: function setup() {
+    function key(index) {
+      return "validation_error_".concat(index, "_").concat(Math.random());
+    }
+
+    return {
+      key: key
+    };
   }
 });
 
@@ -1082,44 +1227,210 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
+  "class": "modal-card"
+};
+var _hoisted_2 = {
   "class": "modal-card-head"
 };
 
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
   "class": "modal-card-title"
-}, "Add Sighting", -1
-/* HOISTED */
-);
-
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("section", {
-  "class": "modal-card-body"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Content ... ")], -1
+}, " Add Sighting ", -1
 /* HOISTED */
 );
 
 var _hoisted_4 = {
-  "class": "modal-card-foot"
+  "class": "modal-card-body pb-3"
+};
+var _hoisted_5 = {
+  "class": "field"
 };
 
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-  "class": "button is-success"
-}, "Submit", -1
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+  "class": "label"
+}, "Title", -1
 /* HOISTED */
 );
 
-function render(_ctx, _cache) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("header", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+var _hoisted_7 = {
+  "class": "control"
+};
+var _hoisted_8 = {
+  key: 0,
+  "class": "help"
+};
+var _hoisted_9 = {
+  "class": "field"
+};
+
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+  "class": "label"
+}, "Date", -1
+/* HOISTED */
+);
+
+var _hoisted_11 = {
+  "class": "control"
+};
+var _hoisted_12 = {
+  key: 0,
+  "class": "help"
+};
+
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Enter the date of the event ");
+
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", null, "(Format: YYYY-MM-DD)", -1
+/* HOISTED */
+);
+
+var _hoisted_15 = {
+  "class": "field"
+};
+
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+  "class": "label"
+}, "GPS Coordinates", -1
+/* HOISTED */
+);
+
+var _hoisted_17 = {
+  "class": "control is-flex is-invalid"
+};
+var _hoisted_18 = {
+  key: 0,
+  "class": "help"
+};
+
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Enter latitude and longitude where the event ocurred ");
+
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", null, "(current position on map shown)", -1
+/* HOISTED */
+);
+
+var _hoisted_21 = {
+  "class": "field"
+};
+
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+  "class": "label"
+}, "Description", -1
+/* HOISTED */
+);
+
+var _hoisted_23 = {
+  "class": "control"
+};
+var _hoisted_24 = {
+  key: 0,
+  "class": "help"
+};
+
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"field\"><label class=\"label\">Upload Image</label><div class=\"control\"><div class=\"file\"><label class=\"file-label\"><input class=\"file-input\" type=\"file\" name=\"file\"><span class=\"file-cta\"><span class=\"file-icon\">⇪</span><span class=\"file-label\">Upload image...</span></span></label></div></div><p class=\"help\">Upload an image of the event</p></div>", 1);
+
+var _hoisted_26 = {
+  "class": "modal-card-foot"
+};
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_v_errors = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-errors");
+
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("header", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     onClick: _cache[1] || (_cache[1] = function ($event) {
       return _ctx.$emit('closeModal');
     }),
     "class": "delete",
     "aria-label": "close"
-  })]), _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("footer", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-    onClick: _cache[2] || (_cache[2] = function ($event) {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("section", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    "class": ["input", [{
+      'is-danger': $setup.validateErrors('title')
+    }]],
+    type: "text",
+    name: "title",
+    placeholder: "Close encounter in...",
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+      return _ctx.title = $event;
+    })
+  }, null, 2
+  /* CLASS */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.title]])]), !$setup.validateErrors('title') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", _hoisted_8, " Enter a title for the sighting ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_errors, {
+    errors: $setup.validateErrors('title')
+  }, null, 8
+  /* PROPS */
+  , ["errors"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    "class": ["input", [{
+      'is-danger': $setup.validateErrors('date')
+    }]],
+    type: "text",
+    name: "date",
+    placeholder: "YYYY-MM-DD",
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+      return _ctx.date = $event;
+    })
+  }, null, 2
+  /* CLASS */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.date]])]), !$setup.validateErrors('date') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", _hoisted_12, [_hoisted_13, _hoisted_14])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_errors, {
+    errors: $setup.validateErrors('date')
+  }, null, 8
+  /* PROPS */
+  , ["errors"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    "class": ["input mr-2", [{
+      'is-danger': $setup.validateErrors('location')
+    }]],
+    type: "text",
+    name: "location.latitude",
+    placeholder: "Latitude",
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+      return _ctx.coords[0] = $event;
+    })
+  }, null, 2
+  /* CLASS */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.coords[0]]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    "class": ["input ml-2", [{
+      'is-danger': $setup.validateErrors('location')
+    }]],
+    type: "text",
+    name: "location.longitude",
+    placeholder: "Longitude",
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+      return _ctx.coords[1] = $event;
+    })
+  }, null, 2
+  /* CLASS */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.coords[1]]])]), !$setup.validateErrors('location') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", _hoisted_18, [_hoisted_19, _hoisted_20])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_errors, {
+    errors: $setup.validateErrors('location')
+  }, null, 8
+  /* PROPS */
+  , ["errors"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
+    "class": ["textarea", [{
+      'is-danger': $setup.validateErrors('description')
+    }]],
+    name: "description",
+    placeholder: "Tell us what happened...",
+    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+      return _ctx.description = $event;
+    })
+  }, null, 2
+  /* CLASS */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.description]])]), !$setup.validateErrors('description') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", _hoisted_24, " Describe what happened ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_errors, {
+    errors: $setup.validateErrors('description')
+  }, null, 8
+  /* PROPS */
+  , ["errors"])]), _hoisted_25]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("footer", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+    onClick: _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+      return $setup.submit && $setup.submit.apply($setup, arguments);
+    }, ["prevent"])),
+    "class": "button is-success",
+    disabled: _ctx.sending
+  }, "Submit", 8
+  /* PROPS */
+  , ["disabled"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+    onClick: _cache[8] || (_cache[8] = function ($event) {
       return _ctx.$emit('closeModal');
     }),
-    "class": "button"
-  }, "Cancel")])]);
+    "class": "button",
+    disabled: _ctx.sending
+  }, "Cancel", 8
+  /* PROPS */
+  , ["disabled"])])]);
 }
 
 /***/ }),
@@ -1331,6 +1642,34 @@ function render(_ctx, _cache) {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/app/shared/components/ValidationErrors.vue?vue&type=template&id=1ddabebf":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/app/shared/components/ValidationErrors.vue?vue&type=template&id=1ddabebf ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.errors, function (error, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", {
+      "class": "help is-danger",
+      key: $setup.key(index)
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(error), 1
+    /* TEXT */
+    );
+  }), 128
+  /* KEYED_FRAGMENT */
+  );
+}
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -1341,15 +1680,98 @@ function render(_ctx, _cache) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 /* harmony import */ var _Index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Index */ "./resources/js/Index.vue");
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
+/* harmony import */ var _app_shared_components_ValidationErrors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app/shared/components/ValidationErrors */ "./resources/js/app/shared/components/ValidationErrors.vue");
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
 
 
-(0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)(_Index__WEBPACK_IMPORTED_MODULE_1__.default).use(_store__WEBPACK_IMPORTED_MODULE_3__.default).use(_routes__WEBPACK_IMPORTED_MODULE_2__.default).mount('#app');
+
+var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)(_Index__WEBPACK_IMPORTED_MODULE_1__.default);
+app.component('v-errors', _app_shared_components_ValidationErrors__WEBPACK_IMPORTED_MODULE_2__.default);
+app.use(_routes__WEBPACK_IMPORTED_MODULE_3__.default);
+app.use(_store__WEBPACK_IMPORTED_MODULE_4__.default);
+app.mount('#app');
+
+/***/ }),
+
+/***/ "./resources/js/app/shared/formatCoords.js":
+/*!*************************************************!*\
+  !*** ./resources/js/app/shared/formatCoords.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ formatCoords)
+/* harmony export */ });
+function formatCoords(latitude, longitude) {
+  latitude = +latitude.toFixed(6);
+  longitude = +longitude.toFixed(6);
+  return [latitude, longitude];
+}
+
+/***/ }),
+
+/***/ "./resources/js/app/shared/getCurrentState.js":
+/*!****************************************************!*\
+  !*** ./resources/js/app/shared/getCurrentState.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getCurrentState)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function getCurrentState(_x) {
+  return _getCurrentState.apply(this, arguments);
+}
+
+function _getCurrentState() {
+  _getCurrentState = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(coords) {
+    var apiKey, axiosService;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            apiKey = 'de7fdcfba2734932be8d31c84963114a';
+            _context.prev = 1;
+            // Need a single axios instance w/o X-Requested-With
+            axiosService = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+            delete axiosService.defaults.headers.common['X-Requested-With'];
+            _context.next = 6;
+            return axiosService.get("https://api.opencagedata.com/geocode/v1/json?q=".concat(coords.join('+'), "&key=").concat(apiKey));
+
+          case 6:
+            return _context.abrupt("return", _context.sent.data.results[0].components.state);
+
+          case 9:
+            _context.prev = 9;
+            _context.t0 = _context["catch"](1);
+            console.log("Could not determine what state you're in.");
+
+          case 12:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[1, 9]]);
+  }));
+  return _getCurrentState.apply(this, arguments);
+}
 
 /***/ }),
 
@@ -1455,8 +1877,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     setSightings: function setSightings(state, sightings) {
       state.sightings = sightings;
     },
+    setSighting: function setSighting(state, sighting) {
+      state.sightings.push(sighting);
+    },
     setCurrentPosition: function setCurrentPosition(state, coords) {
-      state.coords = coords;
+      state.currentPosition = coords;
     }
   },
   getters: {
@@ -2272,15 +2697,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _SightingForm_vue_vue_type_template_id_48f97706__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SightingForm.vue?vue&type=template&id=48f97706 */ "./resources/js/app/components/SightingForm.vue?vue&type=template&id=48f97706");
+/* harmony import */ var _SightingForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SightingForm.vue?vue&type=script&lang=js */ "./resources/js/app/components/SightingForm.vue?vue&type=script&lang=js");
 
-const script = {}
-script.render = _SightingForm_vue_vue_type_template_id_48f97706__WEBPACK_IMPORTED_MODULE_0__.render
+
+
+_SightingForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _SightingForm_vue_vue_type_template_id_48f97706__WEBPACK_IMPORTED_MODULE_0__.render
 /* hot reload */
 if (false) {}
 
-script.__file = "resources/js/app/components/SightingForm.vue"
+_SightingForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__file = "resources/js/app/components/SightingForm.vue"
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (script);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_SightingForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default);
 
 /***/ }),
 
@@ -2359,6 +2786,32 @@ if (false) {}
 script.__file = "resources/js/app/components/auth/Register.vue"
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (script);
+
+/***/ }),
+
+/***/ "./resources/js/app/shared/components/ValidationErrors.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/app/shared/components/ValidationErrors.vue ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ValidationErrors_vue_vue_type_template_id_1ddabebf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ValidationErrors.vue?vue&type=template&id=1ddabebf */ "./resources/js/app/shared/components/ValidationErrors.vue?vue&type=template&id=1ddabebf");
+/* harmony import */ var _ValidationErrors_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ValidationErrors.vue?vue&type=script&lang=js */ "./resources/js/app/shared/components/ValidationErrors.vue?vue&type=script&lang=js");
+
+
+
+_ValidationErrors_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _ValidationErrors_vue_vue_type_template_id_1ddabebf__WEBPACK_IMPORTED_MODULE_0__.render
+/* hot reload */
+if (false) {}
+
+_ValidationErrors_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__file = "resources/js/app/shared/components/ValidationErrors.vue"
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_ValidationErrors_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default);
 
 /***/ }),
 
@@ -2458,6 +2911,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/app/components/SightingForm.vue?vue&type=script&lang=js":
+/*!******************************************************************************!*\
+  !*** ./resources/js/app/components/SightingForm.vue?vue&type=script&lang=js ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SightingForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__.default)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SightingForm_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./SightingForm.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/app/components/SightingForm.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/js/app/components/SightingList.vue?vue&type=script&lang=js":
 /*!******************************************************************************!*\
   !*** ./resources/js/app/components/SightingList.vue?vue&type=script&lang=js ***!
@@ -2470,6 +2939,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SightingList_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__.default)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SightingList_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./SightingList.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/app/components/SightingList.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
+/***/ "./resources/js/app/shared/components/ValidationErrors.vue?vue&type=script&lang=js":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/app/shared/components/ValidationErrors.vue?vue&type=script&lang=js ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ValidationErrors_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__.default)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ValidationErrors_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ValidationErrors.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/app/shared/components/ValidationErrors.vue?vue&type=script&lang=js");
  
 
 /***/ }),
@@ -2630,6 +3115,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Register_vue_vue_type_template_id_70cc903d__WEBPACK_IMPORTED_MODULE_0__.render)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Register_vue_vue_type_template_id_70cc903d__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Register.vue?vue&type=template&id=70cc903d */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/app/components/auth/Register.vue?vue&type=template&id=70cc903d");
+
+
+/***/ }),
+
+/***/ "./resources/js/app/shared/components/ValidationErrors.vue?vue&type=template&id=1ddabebf":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/app/shared/components/ValidationErrors.vue?vue&type=template&id=1ddabebf ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ValidationErrors_vue_vue_type_template_id_1ddabebf__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ValidationErrors_vue_vue_type_template_id_1ddabebf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ValidationErrors.vue?vue&type=template&id=1ddabebf */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/app/shared/components/ValidationErrors.vue?vue&type=template&id=1ddabebf");
 
 
 /***/ }),

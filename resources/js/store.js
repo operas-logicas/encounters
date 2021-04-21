@@ -12,8 +12,12 @@ export default createStore({
             state.sightings = sightings
         },
 
+        setSighting(state, sighting) {
+            state.sightings.push(sighting)
+        },
+
         setCurrentPosition(state, coords) {
-            state.coords = coords
+            state.currentPosition = coords
         }
     },
 
