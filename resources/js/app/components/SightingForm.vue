@@ -140,12 +140,18 @@
 import { reactive, toRefs, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import * as Auth from '../shared/auth'
 import getCurrentState from '../shared/getCurrentState'
 
 export default {
     setup(props, { emit }) {
         const router = useRouter()
         const store = useStore()
+
+        if (!Auth.isLoggedIn()) {
+            emit('closeModal')
+            router.push({ name: 'login' })
+        }
 
         const state = reactive({
             title: null,
@@ -157,6 +163,7 @@ export default {
                 store.state.currentPosition[1]
             ],
             currentState: null,
+            user_id: store.state.user.id,
 
             errors: null,
             sending: false,
@@ -184,6 +191,7 @@ export default {
             if (state.coords && state.coords[0] && state.coords[1])
                 formData.append('location', state.coords.join(','))
             if (state.currentState) formData.append('state', state.currentState)
+            if (state.user_id) formData.append('user_id', state.user_id)
             if (state.image) formData.append('image', state.image)
 
             try {
@@ -200,7 +208,7 @@ export default {
                     state.sending = false
 
                     // Push new sighting to global store
-                    // (will trigger refresh from server)
+                    // (will trigger top sightings to update)
                     const sighting = response.data.data
                     store.commit('setSighting', sighting)
 

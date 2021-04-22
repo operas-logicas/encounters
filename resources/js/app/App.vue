@@ -28,16 +28,16 @@
                             <router-link :to="{ name: 'home' }" class="navbar-item">
                                 Home
                             </router-link>
-                            <router-link :to="{ name: 'post' }" class="navbar-item">
+                            <router-link v-if="isLoggedIn" :to="{ name: 'post' }" class="navbar-item">
                                 Post
                             </router-link>
-                            <router-link :to="{ name: 'register' }" class="navbar-item">
+                            <router-link v-if="!isLoggedIn" :to="{ name: 'register' }" class="navbar-item">
                                 Register
                             </router-link>
-                            <router-link :to="{ name: 'login' }" class="navbar-item">
+                            <router-link v-if="!isLoggedIn" :to="{ name: 'login' }" class="navbar-item">
                                 Login
                             </router-link>
-                            <a href="#" class="navbar-item">
+                            <a v-if="isLoggedIn" @click.prevent="logout" href="#" class="navbar-item">
                                 Logout
                             </a>
                         </div>
@@ -71,8 +71,9 @@
 </template>
 
 <script>
-import { reactive, toRefs, watch } from 'vue'
+import { computed, reactive, toRefs, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 import Map from './components/Map'
 import Modal from './components/Modal'
 import SightingList from './components/SightingList'
@@ -87,12 +88,24 @@ export default {
     setup() {
         const router = useRouter()
         const route = useRoute()
+        const store = useStore()
 
         const state = reactive({
             navbarMenu: false,
             show: false,
             view: 'home'
         })
+
+        const isLoggedIn = computed(() => store.state.isLoggedIn)
+
+        async function logout() {
+            try {
+                await axios.post(`/logout`)
+                await store.dispatch('logout')
+            } catch (error) {
+                await store.dispatch('logout')
+            }
+        }
 
         function toggleNavbarMenu() {
             state.navbarMenu = !state.navbarMenu
@@ -121,6 +134,8 @@ export default {
 
         return {
             ...toRefs(state),
+            isLoggedIn,
+            logout,
             toggleNavbarMenu,
             showModal,
             closeModal

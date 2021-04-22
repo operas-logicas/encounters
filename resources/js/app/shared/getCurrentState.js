@@ -5,6 +5,7 @@ export default async function getCurrentState(coords) {
         // Need a single axios instance w/o X-Requested-With
         const axiosService = require('axios')
         delete axiosService.defaults.headers.common['X-Requested-With']
+        axiosService.defaults.withCredentials = false
 
         return (await axiosService.get(
                 `https://api.opencagedata.com/geocode/v1/json?q=${

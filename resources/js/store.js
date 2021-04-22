@@ -1,10 +1,13 @@
 import { createStore } from 'vuex'
+import * as Auth from './app/shared/auth'
 import moment from 'moment'
 
 export default createStore({
     state: {
         sightings: null,
-        currentPosition: []
+        currentPosition: [],
+        isLoggedIn: false,
+        user: null,
     },
 
     mutations: {
@@ -18,6 +21,38 @@ export default createStore({
 
         setCurrentPosition(state, coords) {
             state.currentPosition = coords
+        },
+
+        setUser(state, user) {
+            state.user = user
+        },
+
+        setLoggedIn(state, isLoggedIn) {
+            state.isLoggedIn = isLoggedIn
+        }
+    },
+
+    actions: {
+        loadStoredUser({ commit }) {
+            commit('setLoggedIn', Auth.isLoggedIn())
+        },
+
+        async loadUser({ commit, dispatch }) {
+            if (Auth.isLoggedIn()) {
+                try {
+                    const user = (await axios.get(`/user`)).data
+                    commit('setUser', user)
+                    commit('setLoggedIn', true)
+                } catch (error) {
+                    dispatch('logout')
+                }
+            }
+        },
+
+        logout({ commit }) {
+            commit('setUser', null)
+            commit('setLoggedIn', false)
+            Auth.logOut()
         }
     },
 
