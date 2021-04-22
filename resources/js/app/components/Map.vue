@@ -1,6 +1,12 @@
 <template>
     <div class="sighting-map column is-three-fifths-tablet is-two-thirds-desktop">
         <div v-if="loading">Loading...</div>
+        <div v-else-if="error">
+            <p class="is-size-4 mt-3">Error!</p>
+            <hr>
+            <p class="is-size-4">We've encountered a problem 💣</p>
+            <p class="is-size-5 mt-4 mb-3">Unfortunately we cannot proceed</p>
+        </div>
         <l-map v-else ref="map"
                @click="renderMap"
                :zoom="zoom"
@@ -60,7 +66,8 @@ export default {
 
             sightings: null,
             currentState: null,
-            loading: true
+            loading: true,
+            error: false
         })
 
         async function renderMap(position) {
@@ -77,7 +84,14 @@ export default {
             // Update the store
             store.commit('setCurrentPosition', state.coords)
 
-            state.currentState = await getCurrentState(state.coords)
+            try {
+                state.currentState = await getCurrentState(state.coords)
+            } catch (error) {
+                console.log('Could not get your current state from OpenCage Geocoding API')
+                state.error = true
+            } finally {
+                state.loading = false
+            }
         }
 
         async function getSightings() {
@@ -91,7 +105,7 @@ export default {
                 store.commit('setSightings', state.sightings)
 
             } catch (error) {
-                console.log(error)
+                state.error = true
             } finally {
                 state.loading = false
             }

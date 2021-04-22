@@ -3,14 +3,19 @@ require('./bootstrap')
 import { createApp } from 'vue'
 import Index from './Index'
 import ValidationErrors from './app/shared/components/ValidationErrors'
+import FatalError from './app/shared/components/FatalError'
 import router from './routes'
 import store from './store'
 
 // Create Vue app
 const app = createApp(Index)
+
 app.component('v-errors', ValidationErrors)
+app.component('fatal-error', FatalError)
+
 app.use(router)
 app.use(store)
+
 app.mount('#app')
 
 // Intercept 401 Unauthorized

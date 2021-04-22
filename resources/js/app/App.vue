@@ -163,6 +163,10 @@ export default {
     background-color: hsl(0, 0%, 21%) !important;
 }
 
+.navbar-item:focus {
+    background-color: black !important;
+}
+
 .navbar-item.is-active:hover {
     background-color: black !important;
 }

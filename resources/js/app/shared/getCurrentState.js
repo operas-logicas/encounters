@@ -14,6 +14,6 @@ export default async function getCurrentState(coords) {
             )).data.results[0].components.state
 
     } catch (error) {
-        console.log(`Could not determine what state you're in.`)
+        throw error
     }
 }

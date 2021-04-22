@@ -1,5 +1,6 @@
 <template>
-    <div class="modal-card">
+    <fatal-error v-if="error" />
+    <div v-else class="modal-card">
         <header class="modal-card-head">
             <p class="modal-card-title">
                 Login
@@ -95,7 +96,7 @@ export default {
                 // Initialize CSRF Protection
                 await axios.get(`/sanctum/csrf-cookie`)
 
-                const response = await axios.post(
+                await axios.post(
                     `/login`,
                     {
                         handle: state.handle,

@@ -39,8 +39,13 @@
 import { reactive, toRefs, watch} from 'vue'
 import { useRoute } from 'vue-router'
 import moment from 'moment'
+import Likes from './Likes'
 
 export default {
+    components: {
+        Likes
+    },
+
     props: {
         id: String
     },

@@ -1,5 +1,6 @@
 <template>
-    <div class="modal-card">
+    <fatal-error v-if="error" />
+    <div v-else class="modal-card">
         <header class="modal-card-head">
             <p class="modal-card-title">
                 Add Sighting
@@ -137,7 +138,7 @@
 </template>
 
 <script>
-import { reactive, toRefs, watch } from 'vue'
+import { computed, reactive, toRefs, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import * as Auth from '../shared/auth'
@@ -163,12 +164,13 @@ export default {
                 store.state.currentPosition[1]
             ],
             currentState: null,
-            user_id: store.state.user.id,
 
             errors: null,
             sending: false,
             error: false,
         })
+
+        const user_id = computed(() => store.state.user.id)
 
         function validateErrors(field) {
             return state.errors && state.errors[field] ? state.errors[field] : null
@@ -182,7 +184,14 @@ export default {
             state.sending = true
             state.errors = null
 
-            state.currentState = await getCurrentState(state.coords)
+            try {
+                state.currentState = await getCurrentState(state.coords)
+            } catch (error) {
+                console.log('Could not get your current state from OpenCage Geocoding API')
+                state.error = true
+            } finally {
+                state.sending = false
+            }
 
             const formData = new FormData()
             if (state.title) formData.append('title', state.title)
@@ -246,6 +255,7 @@ export default {
 
         return {
             ...toRefs(state),
+            user_id,
             validateErrors,
             uploadFile,
             submit
