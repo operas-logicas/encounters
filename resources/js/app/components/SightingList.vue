@@ -21,6 +21,7 @@
         <button @click="$emit('showModal', 'post')" class="button is-large is-fullwidth is-success">
             Add your own sighting
         </button>
+        <p class="is-size-7 pt-1">(Click on the map first to get GPS coordinates)</p>
     </div>
 </template>
 
@@ -55,7 +56,8 @@ export default {
         // Watch for sightings! Get the top ones.
         watch(
             () => store.state.sightings,
-            topSightings
+            topSightings,
+            { deep: true }
         )
 
         return {

@@ -70,7 +70,7 @@
                 </div>
                 <p v-if="!validateErrors('location')" class="help">
                     Enter latitude and longitude where the event ocurred
-                    <i>(current position on map shown)</i>
+                    <i>(current position on map shown by default)</i>
                 </p>
                 <v-errors :errors="validateErrors('location')"></v-errors>
             </div>
@@ -94,12 +94,20 @@
                 <v-errors :errors="validateErrors('description')"></v-errors>
             </div>
 
-            <div class="field">
+            <div class="field pb-3">
                 <label class="label">Upload Image</label>
                 <div class="control">
-                    <div class="file">
+                    <div class="file"
+                         :class="[
+                            { 'is-danger': validateErrors('image') }
+                         ]"
+                    >
                         <label class="file-label">
-                            <input class="file-input" type="file" name="file">
+                            <input @change="uploadFile"
+                                   class="file-input"
+                                   type="file"
+                                   name="image"
+                            >
                             <span class="file-cta">
                                 <span class="file-icon">⇪</span>
                                 <span class="file-label">Upload image...</span>
@@ -107,7 +115,10 @@
                         </label>
                     </div>
                 </div>
-                <p class="help">Upload an image of the event</p>
+                <p v-if="!validateErrors('image')" class="help">
+                    Upload an image of the event
+                </p>
+                <v-errors :errors="validateErrors('image')"></v-errors>
             </div>
         </section>
 
@@ -120,6 +131,7 @@
                     class="button"
                     :disabled="sending"
             >Cancel</button>
+            <p v-if="sending" class="i">Sending...</p>
         </footer>
     </div>
 </template>
@@ -139,7 +151,7 @@ export default {
             title: null,
             date: null,
             description: null,
-            file: null,
+            image: null,
             coords: [
                 store.state.currentPosition[0],
                 store.state.currentPosition[1]
@@ -155,6 +167,10 @@ export default {
             return state.errors && state.errors[field] ? state.errors[field] : null
         }
 
+        function uploadFile(event) {
+            state.image = event.target.files[0]
+        }
+
         async function submit() {
             state.sending = true
             state.errors = null
@@ -162,12 +178,13 @@ export default {
             state.currentState = await getCurrentState(state.coords)
 
             const formData = new FormData()
-            formData.append('title', state.title)
-            formData.append('date', state.date)
-            formData.append('description', state.description)
-            formData.append('location', state.coords.join(','))
-            formData.append('state', state.currentState)
-            if (state.file) formData.append('file', state.file.files[0])
+            if (state.title) formData.append('title', state.title)
+            if (state.date) formData.append('date', state.date)
+            if (state.description) formData.append('description', state.description)
+            if (state.coords && state.coords[0] && state.coords[1])
+                formData.append('location', state.coords.join(','))
+            if (state.currentState) formData.append('state', state.currentState)
+            if (state.image) formData.append('image', state.image)
 
             try {
                 const response = await axios.post(
@@ -222,6 +239,7 @@ export default {
         return {
             ...toRefs(state),
             validateErrors,
+            uploadFile,
             submit
         }
     }

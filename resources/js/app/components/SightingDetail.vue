@@ -15,7 +15,7 @@
         <section class="modal-card-body pb-3">
             <div class="content">
                 <p v-if="sighting.img_path" class="image is-4by3 mb-3">
-                    <img :src="`../${sighting.img_path}`">
+                    <img :src="`../storage/${sighting.img_path}`">
                 </p>
                 <p class="mb-3">
                     {{ sighting.description }}
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { reactive, toRefs, watch } from 'vue'
+import { reactive, toRefs, watch} from 'vue'
 import { useRoute } from 'vue-router'
 import moment from 'moment'
 
@@ -50,8 +50,8 @@ export default {
 
         const state = reactive({
             sighting: null,
-            hasLikes: true,
-            niceDate: '',
+            niceDate: null,
+            hasLikes: false,
             loading: true
         });
 
@@ -71,8 +71,10 @@ export default {
         watch(
             () => state.sighting,
             () => {
-                if (state.sighting)
+                if (state.sighting) {
+                    state.hasLikes = state.sighting.likes > 0
                     state.niceDate = moment(state.sighting.date).format('ll')
+                }
             }
         )
 

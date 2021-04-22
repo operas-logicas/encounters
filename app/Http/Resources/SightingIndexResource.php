@@ -23,6 +23,7 @@ class SightingIndexResource extends JsonResource
             'description' => $this->description,
             'location' => $this->location,
             'state' => $this->state,
+            'img_path' => $this->img_path,
             'user_handle' => User::findOrFail($this->user_id)->handle,
             'likes' => Like::where('sighting_id', $this->id)->count()
         ];

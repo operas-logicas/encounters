@@ -12,6 +12,7 @@
                 :attribution="attribution"
             />
 
+            <!-- Sightings -->
             <l-marker v-for="(sighting, i) in sightings"
                       :key="`marker-${i}`"
                       :lat-lng="sighting.location.split(',')"

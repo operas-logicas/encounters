@@ -33,10 +33,20 @@ class SightingController extends Controller
             'description' => 'required|min:3',
             'location' => 'required|regex:/^-?\d+.?\d*,{1}-?\d+.?\d*$/',
             'state' => 'required|min:2',
-            'file' => 'nullable|file|image|max:2048'
+            'image' => 'sometimes|file|image|max:2048'
         ]);
 
         $user = User::all()->random();
+
+        if (
+            $request->hasFile('image') &&
+            $request->file('image')->isValid()
+        ) {
+            $img_path = $request->file('image')->store('public/images/user');
+            $img_path = substr($img_path, 7);
+        } else {
+            $img_path = null;
+        }
 
         $sighting = new Sighting();
         $sighting->id = Str::uuid();
@@ -45,10 +55,7 @@ class SightingController extends Controller
         $sighting->description = $request->input('description');
         $sighting->location = $request->input('location');
         $sighting->state = $request->input('state');
-        $sighting->img_path =
-            $request->hasFile('file') && $request->file('file')->isValid()
-                ? $request->file('file')->store('images/user')
-                : null;
+        $sighting->img_path = $img_path;
 
         $user->sightings()->save($sighting);
 

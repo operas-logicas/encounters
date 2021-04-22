@@ -408,8 +408,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var route = (0,vue_router__WEBPACK_IMPORTED_MODULE_3__.useRoute)();
     var state = (0,vue__WEBPACK_IMPORTED_MODULE_1__.reactive)({
       sighting: null,
-      hasLikes: true,
-      niceDate: '',
+      niceDate: null,
+      hasLikes: false,
       loading: true
     }); // 'onCreated' load sighting
 
@@ -448,7 +448,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.watch)(function () {
       return state.sighting;
     }, function () {
-      if (state.sighting) state.niceDate = moment__WEBPACK_IMPORTED_MODULE_2___default()(state.sighting.date).format('ll');
+      if (state.sighting) {
+        state.hasLikes = state.sighting.likes > 0;
+        state.niceDate = moment__WEBPACK_IMPORTED_MODULE_2___default()(state.sighting.date).format('ll');
+      }
     });
     return _objectSpread({}, (0,vue__WEBPACK_IMPORTED_MODULE_1__.toRefs)(state));
   }
@@ -498,7 +501,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       title: null,
       date: null,
       description: null,
-      file: null,
+      image: null,
       coords: [store.state.currentPosition[0], store.state.currentPosition[1]],
       currentState: null,
       errors: null,
@@ -508,6 +511,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
     function validateErrors(field) {
       return state.errors && state.errors[field] ? state.errors[field] : null;
+    }
+
+    function uploadFile(event) {
+      state.image = event.target.files[0];
     }
 
     function submit() {
@@ -529,12 +536,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 4:
                 state.currentState = _context.sent;
                 formData = new FormData();
-                formData.append('title', state.title);
-                formData.append('date', state.date);
-                formData.append('description', state.description);
-                formData.append('location', state.coords.join(','));
-                formData.append('state', state.currentState);
-                if (state.file) formData.append('file', state.file.files[0]);
+                if (state.title) formData.append('title', state.title);
+                if (state.date) formData.append('date', state.date);
+                if (state.description) formData.append('description', state.description);
+                if (state.coords && state.coords[0] && state.coords[1]) formData.append('location', state.coords.join(','));
+                if (state.currentState) formData.append('state', state.currentState);
+                if (state.image) formData.append('image', state.image);
                 _context.prev = 12;
                 _context.next = 15;
                 return axios.post("/api/sightings", formData, {
@@ -598,6 +605,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     });
     return _objectSpread(_objectSpread({}, (0,vue__WEBPACK_IMPORTED_MODULE_1__.toRefs)(state)), {}, {
       validateErrors: validateErrors,
+      uploadFile: uploadFile,
       submit: submit
     });
   }
@@ -650,7 +658,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.watch)(function () {
       return store.state.sightings;
-    }, topSightings);
+    }, topSightings, {
+      deep: true
+    });
     return _objectSpread({}, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toRefs)(state));
   }
 });
@@ -931,7 +941,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         attribution: _ctx.attribution
       }, null, 8
       /* PROPS */
-      , ["url", "attribution"]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.sightings, function (sighting, i) {
+      , ["url", "attribution"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Sightings "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.sightings, function (sighting, i) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_l_marker, {
           key: "marker-".concat(i),
           "lat-lng": sighting.location.split(',')
@@ -1190,7 +1200,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "delete",
     "aria-label": "close"
   })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("section", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [_ctx.sighting.img_path ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
-    src: "../".concat(_ctx.sighting.img_path)
+    src: "../storage/".concat(_ctx.sighting.img_path)
   }, null, 8
   /* PROPS */
   , ["src"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.sighting.description), 1
@@ -1303,7 +1313,7 @@ var _hoisted_18 = {
 
 var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Enter latitude and longitude where the event ocurred ");
 
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", null, "(current position on map shown)", -1
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", null, "(current position on map shown by default)", -1
 /* HOISTED */
 );
 
@@ -1324,11 +1334,43 @@ var _hoisted_24 = {
   key: 0,
   "class": "help"
 };
+var _hoisted_25 = {
+  "class": "field pb-3"
+};
 
-var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"field\"><label class=\"label\">Upload Image</label><div class=\"control\"><div class=\"file\"><label class=\"file-label\"><input class=\"file-input\" type=\"file\" name=\"file\"><span class=\"file-cta\"><span class=\"file-icon\">⇪</span><span class=\"file-label\">Upload image...</span></span></label></div></div><p class=\"help\">Upload an image of the event</p></div>", 1);
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+  "class": "label"
+}, "Upload Image", -1
+/* HOISTED */
+);
 
-var _hoisted_26 = {
+var _hoisted_27 = {
+  "class": "control"
+};
+var _hoisted_28 = {
+  "class": "file-label"
+};
+
+var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
+  "class": "file-cta"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
+  "class": "file-icon"
+}, "⇪"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
+  "class": "file-label"
+}, "Upload image...")], -1
+/* HOISTED */
+);
+
+var _hoisted_30 = {
+  key: 0,
+  "class": "help"
+};
+var _hoisted_31 = {
   "class": "modal-card-foot"
+};
+var _hoisted_32 = {
+  key: 0,
+  "class": "i"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_v_errors = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-errors");
@@ -1414,8 +1456,27 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     errors: $setup.validateErrors('description')
   }, null, 8
   /* PROPS */
-  , ["errors"])]), _hoisted_25]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("footer", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-    onClick: _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+  , ["errors"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_25, [_hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+    "class": ["file", [{
+      'is-danger': $setup.validateErrors('image')
+    }]]
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    onChange: _cache[7] || (_cache[7] = function () {
+      return $setup.uploadFile && $setup.uploadFile.apply($setup, arguments);
+    }),
+    "class": "file-input",
+    type: "file",
+    name: "image"
+  }, null, 32
+  /* HYDRATE_EVENTS */
+  ), _hoisted_29])], 2
+  /* CLASS */
+  )]), !$setup.validateErrors('image') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", _hoisted_30, " Upload an image of the event ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_errors, {
+    errors: $setup.validateErrors('image')
+  }, null, 8
+  /* PROPS */
+  , ["errors"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("footer", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+    onClick: _cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $setup.submit && $setup.submit.apply($setup, arguments);
     }, ["prevent"])),
     "class": "button is-success",
@@ -1423,14 +1484,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, "Submit", 8
   /* PROPS */
   , ["disabled"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-    onClick: _cache[8] || (_cache[8] = function ($event) {
+    onClick: _cache[9] || (_cache[9] = function ($event) {
       return _ctx.$emit('closeModal');
     }),
     "class": "button",
     disabled: _ctx.sending
   }, "Cancel", 8
   /* PROPS */
-  , ["disabled"])])]);
+  , ["disabled"]), _ctx.sending ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", _hoisted_32, "Sending...")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
 }
 
 /***/ }),
@@ -1485,6 +1546,12 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+  "class": "is-size-7 pt-1"
+}, "(Click on the map first to get GPS coordinates)", -1
+/* HOISTED */
+);
+
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
 
 var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
@@ -1525,7 +1592,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
       return _ctx.$emit('showModal', 'post');
     }),
     "class": "button is-large is-fullwidth is-success"
-  }, " Add your own sighting ")]);
+  }, " Add your own sighting "), _hoisted_7]);
 });
 
 /***/ }),

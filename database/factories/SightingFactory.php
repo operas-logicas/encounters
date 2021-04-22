@@ -88,7 +88,7 @@ class SightingFactory extends Factory
             'location' => $this->faker->latitude($min_lat, $max_lat)
                 . ',' . $this->faker->longitude($min_lng, $max_lng),
             'state' => $state,
-            'img_path' => random_int(0, 1) ? './images/user/640x480.png' : null,
+            'img_path' => random_int(0, 1) ? 'images/user/640x480.png' : null,
         ];
     }
 }
