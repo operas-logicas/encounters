@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\SightingIndexResource;
 use App\Http\Resources\SightingShowResource;
 use App\Models\Sighting;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -29,7 +28,6 @@ class SightingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|exists:users,id',
             'title' => 'required|min:3',
             'date' => 'required|date_format:Y-m-d',
             'description' => 'required|min:3',
@@ -38,9 +36,7 @@ class SightingController extends Controller
             'image' => 'sometimes|file|image|max:2048'
         ]);
 
-        $user = Auth::user()->handle === User::findOrFail($request->user_id)->handle
-            ? Auth::user()
-            : exit(500);
+        $user = Auth::user();
 
         if (
             $request->hasFile('image') &&

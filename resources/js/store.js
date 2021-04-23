@@ -19,6 +19,13 @@ export default createStore({
             state.sightings.push(sighting)
         },
 
+        updateSighting(state, payload) {
+            console.log(state.sightings)
+            state.sightings[state.sightings.findIndex(
+                sighting => sighting.id === payload.id
+            )] = payload
+        },
+
         setCurrentPosition(state, coords) {
             state.currentPosition = coords
         },

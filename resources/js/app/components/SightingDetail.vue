@@ -20,12 +20,7 @@
                 <p class="mb-3">
                     {{ sighting.description }}
                 </p>
-                <p class="mb-3">
-                    <span @click.once="sighting.likes++">
-                        <span v-if="hasLikes" class="is-clickable">💚</span>
-                        <span v-else class="is-clickable">🤍</span> {{ sighting.likes }}
-                    </span>
-                </p>
+                <likes :sighting="sighting" :hasLikes="hasLikes" :likes="sighting.likes"></likes>
             </div>
         </section>
 

@@ -163,10 +163,112 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var _shared_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/auth */ "./resources/js/app/shared/auth.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    hasLikes: hasLikes,
-    likes: likes
+    sighting: Object,
+    hasLikes: Boolean,
+    likes: Number
+  },
+  setup: function setup(props, _ref) {
+    var emit = _ref.emit;
+    var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_3__.useRouter)();
+    var store = (0,vuex__WEBPACK_IMPORTED_MODULE_4__.useStore)();
+    var state = (0,vue__WEBPACK_IMPORTED_MODULE_1__.reactive)({
+      hasLikes: props.hasLikes,
+      likes: props.likes,
+      error: false
+    });
+
+    function updateLikes() {
+      return _updateLikes.apply(this, arguments);
+    }
+
+    function _updateLikes() {
+      _updateLikes = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var response, sighting;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (_shared_auth__WEBPACK_IMPORTED_MODULE_2__.isLoggedIn()) {
+                  _context.next = 4;
+                  break;
+                }
+
+                emit('closeModal');
+                _context.next = 4;
+                return router.push({
+                  name: 'login'
+                });
+
+              case 4:
+                state.error = false; // Try incrementing first
+
+                _context.prev = 5;
+                _context.next = 8;
+                return axios.post("/api/likes", {
+                  sighting_id: props.sighting.id
+                });
+
+              case 8:
+                response = _context.sent;
+                sighting = null; // Success
+
+                if (response.data.data) {
+                  state.likes++;
+                  state.hasLikes = true;
+                  sighting = response.data.data;
+                } else {
+                  state.hasLikes = state.likes > 1;
+                  state.likes--;
+                  sighting = props.sighting;
+                  sighting.likes--;
+                } // Push updated sighting to global store
+
+
+                store.commit('updateSighting', sighting);
+                _context.next = 17;
+                break;
+
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](5);
+
+                // Like already in the db so delete it instead
+                if (_context.t0.response && _context.t0.response.status && _context.t0.response.status === 401) {
+                  state.error = true;
+                } else state.error = true;
+
+              case 17:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[5, 14]]);
+      }));
+      return _updateLikes.apply(this, arguments);
+    }
+
+    return {
+      state: state,
+      updateLikes: updateLikes
+    };
   }
 });
 
@@ -612,9 +714,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       sending: false,
       error: false
     });
-    var user_id = (0,vue__WEBPACK_IMPORTED_MODULE_1__.computed)(function () {
-      return store.state.user.id;
-    });
 
     function validateErrors(field) {
       return state.errors && state.errors[field] ? state.errors[field] : null;
@@ -664,21 +763,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 if (state.description) formData.append('description', state.description);
                 if (state.coords && state.coords[0] && state.coords[1]) formData.append('location', state.coords.join(','));
                 if (state.currentState) formData.append('state', state.currentState);
-                if (state.user_id) formData.append('user_id', state.user_id);
                 if (state.image) formData.append('image', state.image);
-                _context.prev = 23;
-                _context.next = 26;
+                _context.prev = 22;
+                _context.next = 25;
                 return axios.post("/api/sightings", formData, {
                   headers: {
                     'Content-Type': 'multipart/form-data'
                   }
                 });
 
-              case 26:
+              case 25:
                 response = _context.sent;
 
                 if (!(response.status === 201)) {
-                  _context.next = 34;
+                  _context.next = 33;
                   break;
                 }
 
@@ -690,7 +788,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 emit('closeModal'); // Redirect to new sighting
 
-                _context.next = 34;
+                _context.next = 33;
                 return router.push({
                   name: 'sighting',
                   params: {
@@ -698,26 +796,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
                 });
 
-              case 34:
-                _context.next = 39;
+              case 33:
+                _context.next = 38;
                 break;
 
-              case 36:
-                _context.prev = 36;
-                _context.t1 = _context["catch"](23);
+              case 35:
+                _context.prev = 35;
+                _context.t1 = _context["catch"](22);
                 if (_context.t1.response && _context.t1.response.status && _context.t1.response.status === 422) state.errors = _context.t1.response.data.errors;else state.error = true;
 
-              case 39:
-                _context.prev = 39;
+              case 38:
+                _context.prev = 38;
                 state.sending = false;
-                return _context.finish(39);
+                return _context.finish(38);
 
-              case 42:
+              case 41:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[2, 8, 12, 15], [23, 36, 39, 42]]);
+        }, _callee, null, [[2, 8, 12, 15], [22, 35, 38, 41]]);
       }));
       return _submit.apply(this, arguments);
     }
@@ -728,7 +826,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       state.coords = [store.state.currentPosition[0], store.state.currentPosition[1]];
     });
     return _objectSpread(_objectSpread({}, (0,vue__WEBPACK_IMPORTED_MODULE_1__.toRefs)(state)), {}, {
-      user_id: user_id,
       validateErrors: validateErrors,
       uploadFile: uploadFile,
       submit: submit
@@ -1310,16 +1407,23 @@ var _hoisted_3 = {
   key: 1,
   "class": "is-clickable"
 };
+var _hoisted_4 = {
+  key: 0,
+  "class": "is-size-7 pb-3",
+  style: {
+    "color": "hsl(348, 86%, 61%) !important"
+  }
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-    onClickOnce: _cache[1] || (_cache[1] = function ($event) {
-      return _ctx.sighting.likes++;
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
+    onClick: _cache[1] || (_cache[1] = function () {
+      return $setup.updateLikes && $setup.updateLikes.apply($setup, arguments);
     })
-  }, [$props.hasLikes ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_2, "💚")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_3, "🤍")), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.sighting.likes), 1
+  }, [$setup.state.hasLikes ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_2, "💚")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_3, "🤍")), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.likes), 1
   /* TEXT */
-  )], 32
-  /* HYDRATE_EVENTS */
-  )]);
+  )])]), $setup.state.error ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", _hoisted_4, "Error! Failed to persist likes to db.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64
+  /* STABLE_FRAGMENT */
+  );
 }
 
 /***/ }),
@@ -1628,20 +1732,11 @@ var _hoisted_10 = {
   "class": "mb-3"
 };
 var _hoisted_11 = {
-  "class": "mb-3"
-};
-var _hoisted_12 = {
-  key: 0,
-  "class": "is-clickable"
-};
-var _hoisted_13 = {
-  key: 1,
-  "class": "is-clickable"
-};
-var _hoisted_14 = {
   "class": "modal-card-foot"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_likes = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("likes");
+
   return _ctx.sighting ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("header", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.sighting.title) + " ", 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_4, "(GPS: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.sighting.location) + ")", 1
@@ -1660,16 +1755,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["src"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.sighting.description), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-    onClickOnce: _cache[2] || (_cache[2] = function ($event) {
-      return _ctx.sighting.likes++;
-    })
-  }, [_ctx.hasLikes ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_12, "💚")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_13, "🤍")), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.sighting.likes), 1
-  /* TEXT */
-  )], 32
-  /* HYDRATE_EVENTS */
-  )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("footer", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-    onClick: _cache[3] || (_cache[3] = function ($event) {
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_likes, {
+    sighting: _ctx.sighting,
+    hasLikes: _ctx.hasLikes,
+    likes: _ctx.sighting.likes
+  }, null, 8
+  /* PROPS */
+  , ["sighting", "hasLikes", "likes"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("footer", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+    onClick: _cache[2] || (_cache[2] = function ($event) {
       return _ctx.$emit('closeModal');
     }),
     "class": "button"
@@ -2778,6 +2871,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     setSighting: function setSighting(state, sighting) {
       state.sightings.push(sighting);
+    },
+    updateSighting: function updateSighting(state, payload) {
+      console.log(state.sightings);
+      state.sightings[state.sightings.findIndex(function (sighting) {
+        return sighting.id === payload.id;
+      })] = payload;
     },
     setCurrentPosition: function setCurrentPosition(state, coords) {
       state.currentPosition = coords;

@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post(
+    'likes',
+    'LikeController'
+)->name('likes');
+
 Route::apiResource(
     'sightings',
     'SightingController'

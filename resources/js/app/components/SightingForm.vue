@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import { computed, reactive, toRefs, watch } from 'vue'
+import { reactive, toRefs, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import * as Auth from '../shared/auth'
@@ -170,8 +170,6 @@ export default {
             error: false,
         })
 
-        const user_id = computed(() => store.state.user.id)
-
         function validateErrors(field) {
             return state.errors && state.errors[field] ? state.errors[field] : null
         }
@@ -200,7 +198,6 @@ export default {
             if (state.coords && state.coords[0] && state.coords[1])
                 formData.append('location', state.coords.join(','))
             if (state.currentState) formData.append('state', state.currentState)
-            if (state.user_id) formData.append('user_id', state.user_id)
             if (state.image) formData.append('image', state.image)
 
             try {
@@ -255,7 +252,6 @@ export default {
 
         return {
             ...toRefs(state),
-            user_id,
             validateErrors,
             uploadFile,
             submit
