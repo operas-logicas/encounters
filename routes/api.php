@@ -13,12 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post(
-    'likes',
-    'LikeController'
-)->name('likes');
+Route::middleware('auth')
+    ->post(
+        'likes',
+        'LikeController'
+    )->name('likes');
+
+Route::middleware('auth')
+    ->post(
+        'sightings',
+        'SightingController@store'
+    )->name('sightings.store');
 
 Route::apiResource(
     'sightings',
     'SightingController'
-)->only('index', 'show', 'store');
+)->only('index', 'show');

@@ -45,6 +45,9 @@ export default {
 
             // Try incrementing first
             try {
+                // Initialize CSRF Protection
+                await axios.get(`/sanctum/csrf-cookie`)
+
                 const response = await axios.post(
                     `/api/likes`,
                     {

@@ -201,6 +201,9 @@ export default {
             if (state.image) formData.append('image', state.image)
 
             try {
+                // Initialize CSRF Protection
+                await axios.get(`/sanctum/csrf-cookie`)
+
                 const response = await axios.post(
                     `/api/sightings`,
                     formData,
