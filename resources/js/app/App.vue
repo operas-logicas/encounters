@@ -40,6 +40,10 @@
                             <a v-if="isLoggedIn" @click.prevent="logout" href="#" class="navbar-item">
                                 Logout
                             </a>
+                            <a v-if="isLoggedIn" href="#" class="navbar-item is-disabled">
+                                <strong>User:&nbsp;</strong>
+                                {{ userHandle }}
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -97,6 +101,7 @@ export default {
         })
 
         const isLoggedIn = computed(() => store.state.isLoggedIn)
+        const userHandle = computed(() => store.state.user.handle)
 
         async function logout() {
             try {
@@ -135,6 +140,7 @@ export default {
         return {
             ...toRefs(state),
             isLoggedIn,
+            userHandle,
             logout,
             toggleNavbarMenu,
             showModal,
@@ -169,5 +175,15 @@ export default {
 
 .navbar-item.is-active:hover {
     background-color: black !important;
+}
+
+.navbar-item.is-disabled:focus {
+  background-color: inherit !important;
+  cursor: text !important;
+}
+
+.navbar-item.is-disabled:hover {
+  background-color: inherit !important;
+  cursor: text !important;
 }
 </style>
